@@ -95,6 +95,12 @@ void start_scan(int socketfd, char *host, int start_port, int end_port){
     char port_s[6];
     sprintf(port_s,"%d",start_port);
     int address_info = getaddrinfo(host, port_s, &hints, &result);
+
+    if(address_info != 0){
+        puts("Failed to find host exiting...");
+        exit(0);
+    }
+
     struct sockaddr_in * port_number = (struct sockaddr_in *) result->ai_addr;
 
     for(int port = start_port; port<=end_port; port++){
@@ -107,7 +113,7 @@ void start_scan(int socketfd, char *host, int start_port, int end_port){
             close(socketfd);
             socketfd = get_socket();
         }else{
-            //printf("Port %d is closed\n",port);
+            printf("Port %d is closed\n",port);
         }
 
     }
